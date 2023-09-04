@@ -1,0 +1,107 @@
+HTML:
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Cofla 6</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel="stylesheet" type="text/css" href="estilo.css">
+</head>
+<body>
+    <div class="flex-container"></div>
+    <form>
+        <input type="hidden" name="data" class="key-data">
+        <input type="submit" value="COMPRAR">     
+    </form>
+    <script src="codigo.js"></script>
+</body>
+</html>
+
+
+
+CSS:
+.flex-container{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.flex-item{
+    flex-grow: 1;
+    margin: 10px;
+    max-width: 340px;
+    border: 2px solid #333;
+    padding: 0 20px;
+}
+
+.flex-item:hover{
+    border-color: #71a154;
+    box-shadow: 0px 0px 13px #31a124;
+}
+
+
+.llave-img{
+    width: 300px;
+}
+
+h3{
+    color: #666;
+}
+
+h2 h3{
+    margin: 0px;
+}
+
+p b{
+    color: #71a154;
+}
+
+form{
+    text-align: center;
+}
+
+input[type="submit"]{
+    background-color: green;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+}
+.flex-item:focus {
+    border: 2px solid blue; 
+}
+
+
+
+
+JavaScript:
+const contenedor = document.querySelector(".flex-container");
+
+function crearLlave(nombre,modelo,precio){
+    img = "<img class='llave-img' src = 'llave.png'>";
+    nombre = `<h2>${nombre}</h2>`;
+    modelo = `<h3>${modelo}</h3>`;
+    precio = `<p> Precio: <b>$${precio}</b></p>`;
+    return [img,nombre,modelo,precio];
+}
+
+const changeHidden = (number) => {
+    console.log("Changing hidden value:", number);
+    document.querySelector(".key-data").value = number;
+};
+
+let documentFragment = document.createDocumentFragment();
+
+for(var i=0; i<20; i++){
+    let modeloRandom = Math.round(Math.random()*10000);
+    let precioRandom = Math.round(Math.random()*10+30);
+    let llave = crearLlave(`llave ${i}`,`modelo ${modeloRandom}`,precioRandom);
+    let div = document.createElement("DIV");
+    div.addEventListener("click",()=>{changeHidden(modeloRandom)});
+    div.tabIndex = i;
+    div.classList.add(`item-${i}`,'flex-item');
+    div.innerHTML = llave[0] + llave[1] + llave[2] + llave[3];
+    documentFragment.appendChild(div);
+}
+
+contenedor.appendChild(documentFragment);
